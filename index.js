@@ -12,42 +12,34 @@ const rl = readline.createInterface({
 });
 
 rl.question("Ingresa la ruta: ", (route) => {
-  // if(!isPathAbsolute(route)){
-  //   console,log('la ruta ingresada es relativa')
-  //   route = toAbsolute(route);
-  //   console.log("la ruta relativa se transformó a abasoluta", route)
-  // }
-  if(functions.isExtNameMd(route)){
-    console.log('el archivo es .md')
-    let texts = functions.fileContent(route);
+  if(!functions.isPathAbsolute(route)){
+    console.log('la ruta ingresada es relativa',route)
+    route = functions.toAbsolute(route);
+    console.log("la ruta relativa se transformó a absoluta", route)
   }
-  process.exit();
+  
+  if(functions.isExists(route)){
+    console.log('la ruta existe')
+  }else{
+    console.log('la ruta no existe')
+    process.exit()
+  }
+  
+  if(functions.isDirectory(route)){
+    console.log("es un directorio")
+  }else{
+    console.log("es un archivo")
+    if(functions.isExtNameMd(route)){
+      console.log('el archivo es .md')
+      let texts = functions.fileContent(route);
+      //console.log('el contenido es', texts)
+    }else{
+      console.log('el archivo no es .md ')
+      process.exit()
+    }
+  }
+
 });
 
-
-
-
-
-// let interfazCaptura = readline.createInterface({
-//   input: process.stdin,
-//   output: process.stdout
-// });
-
-// interfazCaptura.question("Ingrese la ruta: ", function(respuesta) {
-//   let resp = `${respuesta}`;
-//   console.log(`La ruta ingresada es: ${resp}`);
-
-//   functions.existFile(resp).then(()=>{
-//     if(!functions.pathAbsolute(resp)){
-//       console.log('la ruta ingresada es relativa ... se transformará a abasoluta');
-//       resp = functions.pathTransformationAbsolute(resp);
-//       console.log('absoluta: ', resp);
-//     }
-
-//   })
-
-
-
-// })
 
 
