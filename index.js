@@ -12,40 +12,46 @@ const rl = readline.createInterface({
 });
 
 rl.question("Ingresa la ruta: ", (route) => {
+  
   if(!functions.isPathAbsolute(route)){
-    console.log('la ruta ingresada es relativa',route)
+    console.log('la ruta ingresada es relativa', route)
     route = functions.toAbsolute(route);
     console.log("la ruta relativa se transformó a absoluta", route)
   }
   
   if(functions.isExists(route)){
     console.log('la ruta existe')
+
+    if(functions.isDirectory(route)){
+      console.log("es un directorio......")
+    }else{
+      console.log("es un archivo")
+
+      if(functions.isExtNameMd(route)){
+        console.log('el archivo es .md')
+        let texts = functions.fileContent(route);
+
+        if(texts != ''){
+        
+          if(functions.findLinks(texts) !== null){
+            let links = functions.findLinks(texts)
+            console.log(links)
+          }else{
+            console.log('el archivo no tiene links, fin')
+          }
+
+        }else{
+          console.log('el archivo esta vacio, fin')
+        }
+
+      }else{
+        console.log('el archivo no es .md, fin ')
+      }
+    }
   }else{
-    console.log('la ruta no existe')
-    process.exit()
+    console.log('la ruta no existe, fin')
   }
   
-  if(functions.isDirectory(route)){
-    console.log("es un directorio")
-  }else{
-    console.log("es un archivo")
-    if(functions.isExtNameMd(route)){
-      console.log('el archivo es .md')
-      let texts = functions.fileContent(route);
-      //console.log('el contenido es', texts)
-      var expression = /(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/gi;
-      var links = texts.match(expression)
-      if(links == null){
-        console.log("el archivo esta vacio o no contiene links")
-      }else{
-        console.log("su archivo contiene ",links.length, " links.")
-      }
-    }else{
-      console.log('el archivo no es .md ')
-      process.exit()
-    }
-  }
-
 });
 
 
