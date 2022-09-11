@@ -33,6 +33,13 @@ rl.question("Ingresa la ruta: ", (route) => {
       console.log('el archivo es .md')
       let texts = functions.fileContent(route);
       //console.log('el contenido es', texts)
+      var expression = /(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/gi;
+      var links = texts.match(expression)
+      if(links == null){
+        console.log("el archivo esta vacio o no contiene links")
+      }else{
+        console.log("su archivo contiene ",links.length, " links.")
+      }
     }else{
       console.log('el archivo no es .md ')
       process.exit()
