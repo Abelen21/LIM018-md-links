@@ -15,9 +15,11 @@ const isExtNameMd = (param) => path.extname(param) === '.md';
 
 const fileContent = (param) => fs.readFileSync(param, 'utf-8');
 
-const findLinks = (param) =>{
-    const regExp = /(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/gi;
-    return param.match(regExp)
+const findLinks = (param) => {
+    //const regExp = /(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/gi;
+    const regExp = /\[(.+)\]\((https?:\/\/.+)\)/gi;
+    //const regExp = /(https?:\/\/.+)/gi
+    return [...param.matchAll(regExp)];
 }
 
 module.exports = {
