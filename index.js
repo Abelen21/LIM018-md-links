@@ -5,6 +5,7 @@
 // console.log(__dirname)
 const functions = require('./functions.js');
 const readline = require('readline');
+const { url } = require('inspector');
 const axios = require('axios').default;
 
 const rl = readline.createInterface({
@@ -37,24 +38,75 @@ rl.question("Ingresa la ruta: ", (route) => {
           if(functions.findLinks(texts).length != 0){
             let links = functions.findLinks(texts)
 
-            // let arrayObjects = []
-            // for (var i=0; i<links.length; i++){
-            //   arrayObjects.push({"href": links[i][2], "text": links[i][1], "file": route});
-            // }
-
             let arrayObjects = []
             for (var i=0; i<links.length; i++){
               arrayObjects.push({"href": links[i][2], "text": links[i][1], "file": route});
             }
+            console.log(arrayObjects, arrayObjects.length)
+
+            
+            let array = []
+            let arrayPromises3 = []
+
+            for (var i=0; i<arrayObjects.length; i++){
+              let promise = axios({method:'GET',url: arrayObjects[i].href}).then((res) => {
+                let resultado = {
+                  "href":res.config.url,
+                  "status": res.status,
+                  "statustext": res.statusText,
+                }
+                array.push(resultado)}).catch((error) => {
+                  let resultado = {
+                    "href":error.response.config.url,
+                    "status": error.response.status,
+                    "statustext": error.response.statusText,
+                  }
+                  array.push(resultado)
+                })
+              arrayPromises3.push(promise)
+            }
+
+            Promise.allSettled(arrayPromises3).then((allData) =>
+            console.log(array))
+            
+            
+           
+
+
+            // Promise.all(array).then((values) => {
+            //   console.log(values)
+            // });
+
+            // let arrayPromises2 = []
+            // axios({method:'GET', url: arrayObjects[3].href}).then((res)=>{
+            //   let resultado = {
+            //     "status": res.status, 
+            //     "statustext": res.statusText, 
+            //     ...arrayObjects[3]
+            //   }
+            //   console.log(resultado)
+            //   arrayPromises2.push(resultado)
+            // }).catch((error)=>{
+
+            // })
+
+            // Promise.allSettled(arrayPromises2).then((values) => {
+            //   console.log(values)
+            // });
+           
+
+
+
+
+
             // let newArrayObjectsLinks = []
             let arrayPromises = []
-            for (var i=0; i<arrayObjects.length; i++){
-              //console.log(links[i][2])
-              axios({method:'GET', url: arrayObjects[i].href}).then((res)=>{
+            // for (var i=0; i<arrayObjects.length; i++){
+              axios({method:'GET', url: arrayObjects[0].href}).then((res)=>{
                 let resultado = {
                   "status": res.status, 
                   "statustext": res.statusText, 
-                  ...links[i]
+                  ...links[0]
                 }
                 arrayPromises.push(resultado)
               }).catch((error)=>{
@@ -64,12 +116,17 @@ rl.question("Ingresa la ruta: ", (route) => {
                   let resultado = {
                     "status": error.response.status, 
                     "statustext": 'Fail', 
-                    ...links[i]
+                    ...links[0]
                   }
                   arrayPromises.push(resultado)
                 }
               })
-            }
+            // }
+
+            Promise.allSettled(arrayPromises).then((values) => {
+              // procesar respuestas y agregar propiedades nuevas
+              // console.log(values)
+            });
             
             // Promise.allSettled(arrayPromises).then((values) => {
             //   procesar respuestas y agregar propiedades nuevas
