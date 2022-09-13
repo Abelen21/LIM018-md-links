@@ -36,46 +36,13 @@ rl.question("Ingresa la ruta: ", (route) => {
             if(functions.findLinks(texts).length != 0){
               let links = functions.findLinks(texts)
   
-              // let arrayObjects = []
-              // for (var i=0; i<links.length; i++){
-              //   arrayObjects.push({"href": links[i][2], "text": links[i][1], "file": route});
-              // }
-  
               let arrayObjects = []
               for (var i=0; i<links.length; i++){
                 arrayObjects.push({"href": links[i][2], "text": links[i][1], "file": route});
               }
 
               console.log(arrayObjects)
-              // // let newArrayObjectsLinks = []
-              // let arrayPromises = []
-              // for (var i=0; i<arrayObjects.length; i++){
-              //   //console.log(links[i][2])
-              //   axios({method:'GET', url: arrayObjects[i].href}).then((res)=>{
-              //     let resultado = {
-              //       "status": res.status, 
-              //       "statustext": res.statusText, 
-              //       ...links[i]
-              //     }
-              //     arrayPromises.push(resultado)
-              //   }).catch((error)=>{
-              //     // TODO:¨verificar como se van a procesar los que no tengan response
-              //     if(error.response) {
-  
-              //       let resultado = {
-              //         "status": error.response.status, 
-              //         "statustext": 'Fail', 
-              //         ...links[i]
-              //       }
-              //       arrayPromises.push(resultado)
-              //     }
-              //   })
-              // }
-              
-              // Promise.allSettled(arrayPromises).then((values) => {
-              //   procesar respuestas y agregar propiedades nuevas
-              // });
-  
+              console.log(arrayObjects.length)
   
             }else{
               console.log('el archivo no tiene links, fin') 
