@@ -5,6 +5,7 @@
 // console.log(__dirname)
 const functions = require('./functions.js');
 const readline = require('readline');
+const axios = require('axios').default;
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -33,11 +34,50 @@ rl.question("Ingresa la ruta: ", (route) => {
 
         if(texts != ''){
         
-          if(functions.findLinks(texts) !== null){
+          if(functions.findLinks(texts).length != 0){
             let links = functions.findLinks(texts)
-            console.log(links)
+
+            // let arrayObjects = []
+            // for (var i=0; i<links.length; i++){
+            //   arrayObjects.push({"href": links[i][2], "text": links[i][1], "file": route});
+            // }
+
+            let arrayObjects = []
+            for (var i=0; i<links.length; i++){
+              arrayObjects.push({"href": links[i][2], "text": links[i][1], "file": route});
+            }
+            // let newArrayObjectsLinks = []
+            let arrayPromises = []
+            for (var i=0; i<arrayObjects.length; i++){
+              //console.log(links[i][2])
+              axios({method:'GET', url: arrayObjects[i].href}).then((res)=>{
+                let resultado = {
+                  "status": res.status, 
+                  "statustext": res.statusText, 
+                  ...links[i]
+                }
+                arrayPromises.push(resultado)
+              }).catch((error)=>{
+                // TODO:¨verificar como se van a procesar los que no tengan response
+                if(error.response) {
+
+                  let resultado = {
+                    "status": error.response.status, 
+                    "statustext": 'Fail', 
+                    ...links[i]
+                  }
+                  arrayPromises.push(resultado)
+                }
+              })
+            }
+            
+            // Promise.allSettled(arrayPromises).then((values) => {
+            //   procesar respuestas y agregar propiedades nuevas
+            // });
+
+
           }else{
-            console.log('el archivo no tiene links, fin')
+            console.log('el archivo no tiene links, fin') 
           }
 
         }else{
@@ -55,4 +95,14 @@ rl.question("Ingresa la ruta: ", (route) => {
 });
 
 
-
+              // if(links[i].length > 2){
+              //   console.log(links[i][2])
+              //   axios({method:'GET', url: links[i][2]}).then((res)=>{
+              //     console.log(res)
+              //     let resultado = {"status": res.status, "statustext": res.statusText, 
+              //     "href": links[i][2], "text": links[i][1], "file": route}
+              //     console.log(resultado)
+              //     arrayObjects.push(resultado)
+              //   }).catch((error)=>{
+              //   })
+              // }

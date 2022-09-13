@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 // const https = require('http');
 // const url = require('url');
+const axios = require('axios').default;
 
 const isPathAbsolute = (param) => path.isAbsolute(param);
 
@@ -15,9 +16,17 @@ const isExtNameMd = (param) => path.extname(param) === '.md';
 
 const fileContent = (param) => fs.readFileSync(param, 'utf-8');
 
-const findLinks = (param) =>{
-    const regExp = /(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/gi;
-    return param.match(regExp)
+const findLinks = (param) => {
+    //const regExp = /(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/gi;
+    const regExp = /\[(.+)\]\((https?:\/\/.+)\)/gi;
+    //const regExp = /(https?:\/\/.+)/gi
+    return [...param.matchAll(regExp)];
+}
+
+const valLinks = (param) => {
+    axios({method:'GET',url: param}).then((res)=>{
+        console.log(res)
+    })
 }
 
 module.exports = {
@@ -27,6 +36,7 @@ module.exports = {
     isDirectory,
     isExtNameMd,
     fileContent,
-    findLinks
+    findLinks,
+    valLinks
 }
 
