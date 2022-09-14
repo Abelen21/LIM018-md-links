@@ -5,7 +5,7 @@
 // console.log(__dirname)
 const functions = require("./functions.js");
 const readline = require("readline");
-const { url } = require("inspector");
+// const { url } = require("inspector");
 const axios = require("axios").default;
 
 const rl = readline.createInterface({
@@ -44,11 +44,10 @@ rl.question("Ingresa la ruta: ", (route) => {
                 file: route,
               });
             }
-            console.log(arrayObjects, arrayObjects.length);
+            // console.log(arrayObjects);
 
             let array = [];
             let arrayPromises3 = [];
-
             for (var i = 0; i < arrayObjects.length; i++) {
               const obj = arrayObjects[i];
               let promise = axios({ method: "GET", url: obj.href })
@@ -56,24 +55,22 @@ rl.question("Ingresa la ruta: ", (route) => {
                   const resultado = {
                     text: obj.text,
                     href: res.config.url,
+                    file: obj.file,
                     status: res.status,
                     statustext: res.statusText,
                   };
                   array.push(resultado);
                 })
                 .catch((error) => {
-                  // let href = "NA";
-                  // // TODO poner esta logica en una funcion
-                  // if ("response" in error) {
-                  //   href = error.response.config.url;  
-                  // }
-                  const resultado = {
-                    text: obj.text,
-                    href,
-                    status: error.response.status,
-                    statustext: error.response.statusText,
-                  };
-                  array.push(resultado);
+                  if("response" in error){
+                    const resultado = {
+                      text: obj.text,
+                      href: error.response.url,
+                      status: error.response.status,
+                      statustext: error.response.statusText,
+                    };
+                    array.push(resultado);
+                  }
                 });
               arrayPromises3.push(promise);
             }
