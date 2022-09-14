@@ -33,23 +33,13 @@ rl.question("Ingresa la ruta: ", (route) => {
         let texts = functions.fileContent(route);
 
         if (texts != "") {
-          if (functions.findLinks(texts).length != 0) {
-            let links = functions.findLinks(texts);
-
-            let arrayObjects = [];
-            for (var i = 0; i < links.length; i++) {
-              arrayObjects.push({
-                href: links[i][2],
-                text: links[i][1],
-                file: route,
-              });
-            }
-            // console.log(arrayObjects);
-
+          if (functions.findLinks(texts,route).length != 0) {
+            let arrayLinks = functions.findLinks(texts,route);
+            
             let array = [];
-            let arrayPromises3 = [];
-            for (var i = 0; i < arrayObjects.length; i++) {
-              const obj = arrayObjects[i];
+            let arrayPromises = [];
+            for (var i = 0; i < arrayLinks.length; i++) {
+              const obj = arrayLinks[i];
               let promise = axios({ method: "GET", url: obj.href })
                 .then((res) => {
                   const resultado = {
@@ -72,10 +62,10 @@ rl.question("Ingresa la ruta: ", (route) => {
                     array.push(resultado);
                   }
                 });
-              arrayPromises3.push(promise);
+              arrayPromises.push(promise);
             }
 
-            Promise.allSettled(arrayPromises3).then((allData) => {
+            Promise.allSettled(arrayPromises).then((allData) => {
               console.log(array);
             });
 
