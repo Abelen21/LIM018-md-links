@@ -35,40 +35,9 @@ rl.question("Ingresa la ruta: ", (route) => {
         if (texts != "") {
           if (functions.findLinks(texts,route).length != 0) {
             let arrayLinks = functions.findLinks(texts,route);
-            
-            let array = [];
-            let arrayPromises = [];
-            for (var i = 0; i < arrayLinks.length; i++) {
-              const obj = arrayLinks[i];
-              let promise = axios({ method: "GET", url: obj.href })
-                .then((res) => {
-                  const resultado = {
-                    text: obj.text,
-                    href: res.config.url,
-                    file: obj.file,
-                    status: res.status,
-                    statustext: res.statusText,
-                  };
-                  array.push(resultado);
-                })
-                .catch((error) => {
-                  if("response" in error){
-                    const resultado = {
-                      text: obj.text,
-                      href: error.response.url,
-                      status: error.response.status,
-                      statustext: error.response.statusText,
-                    };
-                    array.push(resultado);
-                  }
-                });
-              arrayPromises.push(promise);
-            }
-
-            Promise.allSettled(arrayPromises).then((allData) => {
-              console.log(array);
-            });
-
+            // console.log(arrayLinks)
+            let arrayObjects = functions.validateLinks(arrayLinks);
+            console.log(arrayObjects)
           } else {
             console.log("el archivo no tiene links, fin");
           }
