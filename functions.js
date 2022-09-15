@@ -62,8 +62,7 @@ const validateLinks = (param) => {
   }
 
   Promise.allSettled(arrayPromises).then((allData) => {
-    console.log(array);
-    // return array;
+    console.log(array.length);
   });
 };
 
