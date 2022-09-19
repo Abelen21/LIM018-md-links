@@ -31,40 +31,58 @@ const findLinks = (param1, param2) => {
   return arrayObjects;
 };
 
-const validateLinks = (param) => {
-  let array = [];
-  let arrayPromises = [];
-  for (var i = 0; i < param.length; i++) {
-    const obj = param[i];
-    let promise = axios({ method: "GET", url: obj.href })
-      .then((res) => {
-        const resultado = {
-          text: obj.text,
-          href: res.config.url,
-          file: obj.file,
-          status: res.status,
-          statustext: res.statusText,
-        };
-        array.push(resultado);
-      })
-      .catch((error) => {
-        if ("response" in error) {
-          const resultado = {
-            text: obj.text,
-            href: error.response.url,
-            status: error.response.status,
-            statustext: error.response.statusText,
-          };
-          array.push(resultado);
-        }
-      });
-    arrayPromises.push(promise);
-  }
+const validateLinks = (arrayLinks) =>{
+  let group = arrayLinks.map(async (link)=>{
+    try {
+      const res = await axios({ method: "GET", url: link.href });
+      link.status = res.status,
+      link.statustext = res.statusText;
+      return link;
+    } catch (error) {
+      // console.log(error.response)
+      link.status = error.response.status,
+      link.statustext = 'Fail';
+      return link;
+    }
+  })
+  return Promise.allSettled(group)
+}
 
-  Promise.allSettled(arrayPromises).then((allData) => {
-    console.log(array.length);
-  });
-};
+// const validateLinks = (param) => {
+//   let array = [];
+//   let arrayPromises = [];
+//   for (var i = 0; i < param.length; i++) {
+//     const obj = param[i];
+//     let promise = axios({ method: "GET", url: obj.href })
+//       .then((res) => {
+//         const resultado = {
+//           text: obj.text,
+//           href: res.config.url,
+//           file: obj.file,
+//           status: res.status,
+//           statustext: res.statusText,
+//         };
+//         array.push(resultado);
+//       })
+//       .catch((error) => {
+//         if ("response" in error) {
+//           const resultado = {
+//             text: obj.text,
+//             href: error.response.url,
+//             status: error.response.status,
+//             statustext: error.response.statusText,
+//           };
+//           array.push(resultado);
+//         }
+//       });
+//     arrayPromises.push(promise);
+//   }
+//   Promise.allSettled(arrayPromises).then(()=>{
+//     return array
+//   })
+//   // return array
+//   // return array 
+// };
 
 module.exports = {
   isPathAbsolute,
