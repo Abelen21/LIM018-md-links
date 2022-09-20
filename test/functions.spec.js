@@ -33,7 +33,7 @@ describe("Testing isExtNameMd", () => {
 describe("Testing fileContent", ()=>{
   it("should ..", () => {
     const text = `* [Arreglos](https://curriculum.laboratoria.la/es/topics/javascript/04-arrays)`;
-    expect(functions.fileContent("./archivo3.md")).toContain(text);
+    expect(functions.fileContent("./readme.md")).toContain(text);
   });
 });
 
@@ -70,4 +70,6 @@ describe("Testing findLinks", () => {
 
     expect(arrResult).toStrictEqual(arrayObjects);
   });
+
+  
 });
