@@ -1,13 +1,3 @@
-// const mdLinks = require('../');
-
-// describe('mdLinks', () => {
-
-//   it('should...', () => {
-//     console.log('FIX ME!');
-//   });
-
-// });
-
 const functions = require("../functions.js");
 
 describe("Testing isPathAbsolute", () => {
@@ -42,11 +32,8 @@ describe("Testing isExtNameMd", () => {
 
 describe("Testing fileContent", ()=>{
   it("should ..", () => {
-    const text = `* [Arreglos](https://curriculum.laboratoria.la/es/topics/javascript/04-arrays)
-    * [Array - MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/)
-    * [Array.prototype.sort() - MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)`;
-    
-    expect(functions.fileContent("./archivo3.md")).toEqual(text);
+    const text = `* [Arreglos](https://curriculum.laboratoria.la/es/topics/javascript/04-arrays)`;
+    expect(functions.fileContent("./archivo3.md")).toContain(text);
   });
 });
 
