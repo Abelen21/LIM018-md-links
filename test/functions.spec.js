@@ -16,6 +16,12 @@ describe("Testing isPathAbsolute", () => {
   });
 });
 
+describe("Testing toAbsolute", () => {
+  it("should...", () => {
+    expect(functions.toAbsolute("./readme.md")).toBe('D:\\2022\\LABORATORIA_BOOTCAMP_LIM18\\LIM018-md-links\\readme.md');
+  });
+});
+
 describe("Testing isExists", () => {
   it("should...", () => {
     expect(functions.isExists("./readme.md")).toBe(true);
@@ -25,6 +31,22 @@ describe("Testing isExists", () => {
 describe("Testing isDirectory", () => {
   it("should..", () => {
     expect(functions.isDirectory("./readme.md")).toBe(false);
+  });
+});
+
+describe("Testing isExtNameMd", () => {
+  it("should..", () => {
+    expect(functions.isExtNameMd("./readme.md")).toBe(true);
+  });
+});
+
+describe("Testing fileContent", ()=>{
+  it("should ..", () => {
+    const text = `* [Arreglos](https://curriculum.laboratoria.la/es/topics/javascript/04-arrays)
+    * [Array - MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/)
+    * [Array.prototype.sort() - MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)`;
+    
+    expect(functions.fileContent("./archivo3.md")).toEqual(text);
   });
 });
 
