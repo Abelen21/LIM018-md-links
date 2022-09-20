@@ -30,37 +30,34 @@ const findLinks = (param1, param2) => {
 };
 
 const validateLinks = (param) => {
-  let array = [];
+  
   let arrayPromises = [];
   for (var i = 0; i < param.length; i++) {
     const obj = param[i];
     let promise = axios({ method: "GET", url: obj.href })
       .then((res) => {
-        const resultado = {
+        return {
           text: obj.text,
           href: res.config.url,
           file: obj.file,
           status: res.status,
           statustext: res.statusText,
         };
-        array.push(resultado);
       })
       .catch((error) => {
         if ("response" in error) {
-          const resultado = {
+          return {
             text: obj.text,
             href: error.response.url,
             status: error.response.status,
             statustext: error.response.statusText,
           };
-          array.push(resultado);
         }
       });
     arrayPromises.push(promise);
   }
-  return Promise.allSettled(arrayPromises).then(()=>{
-    return array
-  })
+  return arrayPromises
+  
 };
 
 module.exports = {
@@ -73,6 +70,7 @@ module.exports = {
   findLinks,
   validateLinks
 };
+
 
 // const validateLinks = (arrayLinks) =>{
 //   let group = arrayLinks.map(async (link)=>{

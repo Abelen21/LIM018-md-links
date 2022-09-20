@@ -34,8 +34,9 @@ rl.question("Ingresa la ruta: ", (route) => {
         if (texts != "") {
           if (functions.findLinks(texts,route).length != 0) {
             let arrayLinks = functions.findLinks(texts,route);
-            functions.validateLinks(arrayLinks).then((result)=>{console.log(result)})
-          } else {
+            let arrayPromise = functions.validateLinks(arrayLinks);
+            Promise.all(arrayPromise).then(console.log)
+          }else{
             console.log("el archivo no tiene links, fin");
           }
         } else {
