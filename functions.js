@@ -70,21 +70,3 @@ module.exports = {
   findLinks,
   validateLinks
 };
-
-
-// const validateLinks = (arrayLinks) =>{
-//   let group = arrayLinks.map(async (link)=>{
-//     try {
-//       const res = await axios({ method: "GET", url: link.href });
-//       link.status = res.status,
-//       link.statustext = res.statusText;
-//       return link;
-//     } catch (error) {
-//       // console.log(error.response)
-//       link.status = error.response.status,
-//       link.statustext = 'Fail';
-//       return link;
-//     }
-//   })
-//   return Promise.allSettled(group)
-// }
