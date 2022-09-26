@@ -4,15 +4,20 @@
 // console.log(process.argv)
 // console.log(__dirname)
 const functions = require("./functions.js");
-const readline = require("readline");
-const axios = require("axios").default;
+// const readline = require("readline");
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+// const rl = readline.createInterface({
+//   input: process.stdin,
+//   output: process.stdout,
+// });
 
-rl.question("Ingresa la ruta: ", (route) => {
+// rl.question("Ingresa la ruta: ", (route) => {
+
+
+
+const mdLinks = (route) => {
+  return new Promise((resolve,reject)=>{
+
   if (!functions.isPathAbsolute(route)) {
     console.log("la ruta ingresada es relativa", route);
     route = functions.toAbsolute(route);
@@ -21,7 +26,6 @@ rl.question("Ingresa la ruta: ", (route) => {
 
   if (functions.isExists(route)) {
     console.log("la ruta existe");
-
     if (functions.isDirectory(route)) {
       console.log("es un directorio......");
     } else {
@@ -32,22 +36,41 @@ rl.question("Ingresa la ruta: ", (route) => {
         let texts = functions.fileContent(route);
 
         if (texts != "") {
-          if (functions.findLinks(texts,route).length != 0) {
-            let arrayLinks = functions.findLinks(texts,route);
+          if (functions.findLinks(texts, route).length != 0) {
+            let arrayLinks = functions.findLinks(texts, route);
             let arrayPromise = functions.validateLinks(arrayLinks);
-            Promise.all(arrayPromise).then(console.log)
-          }else{
-            console.log("el archivo no tiene links, fin");
+            Promise.all(arrayPromise).then((resultado)=>{
+              const links = resultado;
+              resolve(links);
+            });
+              //console.log(resultado)});
+          } else {
+            reject("el archivo no tiene links, fin");
           }
         } else {
-          console.log("el archivo esta vacio, fin");
+          reject("el archivo esta vacio, fin");
         }
       } else {
-        console.log("el archivo no es .md, fin ");
+        reject("el archivo no es .md, fin ");
       }
     }
   } else {
-    console.log("la ruta no existe, fin");
+    reject("la ruta no existe, fin");
   }
-});
+
+})
+
+}
+
+mdLinks("./readme.md")
+.then(res => console.log(res))
+.catch(res => console.log(res))
+
+
+
+
+
+
+
+
 
