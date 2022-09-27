@@ -1,8 +1,6 @@
 // module.exports = () => {
 //   // ...
 // }
-// console.log(process.argv)
-// console.log(__dirname)
 const functions = require("./functions.js");
 
 const mdLinks = (route, option = {validate:false, stats:false}) => {
@@ -34,7 +32,6 @@ const mdLinks = (route, option = {validate:false, stats:false}) => {
                 Promise.all(arrayPromise).then((resultado) => {
                   resolve(resultado);
                 });
-                //console.log(resultado)});
               }
             } else {
               reject("el archivo no tiene links, fin");
