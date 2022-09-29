@@ -3,7 +3,7 @@
 // }
 const functions = require("./functions.js");
 
-const mdLinks = (route, option = {validate:false, stats:false}) => {
+const mdLinks = (route, option = { validate: false, stats: false }) => {
   return new Promise((resolve, reject) => {
     if (!functions.isPathAbsolute(route)) {
       console.log("la ruta ingresada es relativa", route);
