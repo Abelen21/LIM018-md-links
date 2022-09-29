@@ -1,13 +1,10 @@
 
-const axios = () => Promise.resolve({
-    status: 200,
-    statusText: 'OK'
-});
-
+const axios = {}
 
 axios.get = () => Promise.resolve({
     status: 200,
-    statusText: 'OK'
+    statusText: 'OK',
+    delete: 'borrar'
 });
 
 
