@@ -7,12 +7,18 @@ const mdLinks = functions.mdLinks;
 //TODO:
 //1. configurar cli
 //2. revisar la cantidad de argumentos que recibe el comando (mdlinks miruta) -> argv
+
 console.log(process.argv)
-const validateOption = process.argv.includes("--validate")
+const [ , , route, option] = process.argv
+if(validateOption = process.argv.includes("--validate:true")){
+  const validateOption = true;
+}else if(validateOption = process.argv.includes("--validate:false")){
+  validateOption = false;
+}
 
 //3. una vez validados los argumentos, llamar funcion mdLinks
 
-mdLinks("./readme.md",{validate:validateOption})
+mdLinks(route,{validate:validateOption})
   .then((res) => console.log(res))
   .catch((res) => console.log(res));
 

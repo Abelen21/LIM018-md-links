@@ -70,6 +70,6 @@ describe("Testing findLinks", () => {
 
     expect(arrResult).toStrictEqual(arrayObjects);
   });
-
-  
 });
+
+
