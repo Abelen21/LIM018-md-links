@@ -1,6 +1,6 @@
 const functions = require("../functions.js");
 
-jest.mock('axios');
+jest.mock("axios");
 
 describe("Testing isPathAbsolute", () => {
   it("should...", () => {
@@ -10,7 +10,9 @@ describe("Testing isPathAbsolute", () => {
 
 describe("Testing toAbsolute", () => {
   it("should...", () => {
-    expect(functions.toAbsolute("./readme.md")).toBe('D:\\2022\\LABORATORIA_BOOTCAMP_LIM18\\LIM018-md-links\\readme.md');
+    expect(functions.toAbsolute("./readme.md")).toBe(
+      "D:\\2022\\LABORATORIA_BOOTCAMP_LIM18\\LIM018-md-links\\readme.md"
+    );
   });
 });
 
@@ -32,7 +34,7 @@ describe("Testing isExtNameMd", () => {
   });
 });
 
-describe("Testing fileContent", ()=>{
+describe("Testing fileContent", () => {
   it("should ..", () => {
     const text = `* [Arreglos](https://curriculum.laboratoria.la/es/topics/javascript/04-arrays)`;
     expect(functions.fileContent("./readme.md")).toContain(text);
@@ -40,7 +42,6 @@ describe("Testing fileContent", ()=>{
 });
 
 describe("Testing findLinks", () => {
-  
   it("should return array of object", () => {
     const text = `* [Arreglos](https://curriculum.laboratoria.la/es/topics/javascript/04-arrays)
     * [Array - MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/)
@@ -63,21 +64,28 @@ describe("Testing findLinks", () => {
         href: "https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/sort",
         text: "Array.prototype.sort() - MDN",
         file: route,
-      }
+      },
     ];
 
     const arrResult = functions.findLinks(text, route);
 
     expect(arrResult).toStrictEqual(arrayObjects);
   });
-
 });
 
 describe("Testing validateLink", () => {
-    
-  it("should return array of promise",()=>{
-
+  it("should return array of promise", () => {
     const arrayObjects = [
+      {
+        href: "https://curriculum.laboratoria.la/es/topics/javascript/04-arrays",
+        text: "Arreglos",
+        file: "./readme.md",
+      },
+      {
+        href: "https://curriculum.laboratoria.la/es/topics/javascript/04-arrays",
+        text: "Arreglos",
+        file: "./readme.md",
+      },
       {
         href: "https://curriculum.laboratoria.la/es/topics/javascript/04-arrays",
         text: "Arreglos",
@@ -85,12 +93,10 @@ describe("Testing validateLink", () => {
       },
     ];
 
-    const arrResult = functions.validateLinks(arrayObjects)
-    expect(arrResult.length).toBe(1)
-
-  })
+    return functions.validateLinks(arrayObjects)[1].then((x) => {
+      console.log("X:::", x);
+    });
+  });
   //typeof obj.then === function
   //obj instanceof Promise
-})
-
-
+});
