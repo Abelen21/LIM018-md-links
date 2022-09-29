@@ -1,5 +1,7 @@
 const functions = require("../functions.js");
 
+jest.mock('axios');
+
 describe("Testing isPathAbsolute", () => {
   it("should...", () => {
     expect(functions.isPathAbsolute("../readme.md")).toBe(false);
@@ -38,9 +40,7 @@ describe("Testing fileContent", ()=>{
 });
 
 describe("Testing findLinks", () => {
-  // it('should return an empty array when passing insufficient arguments', () =>{
-  //   expect(functions.findLinks().length).toBe(0);
-  // })
+  
   it("should return array of object", () => {
     const text = `* [Arreglos](https://curriculum.laboratoria.la/es/topics/javascript/04-arrays)
     * [Array - MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/)
@@ -70,6 +70,27 @@ describe("Testing findLinks", () => {
 
     expect(arrResult).toStrictEqual(arrayObjects);
   });
+
 });
+
+describe("Testing validateLink", () => {
+    
+  it("should return array of promise",()=>{
+
+    const arrayObjects = [
+      {
+        href: "https://curriculum.laboratoria.la/es/topics/javascript/04-arrays",
+        text: "Arreglos",
+        file: "./readme.md",
+      },
+    ];
+
+    const arrResult = functions.validateLinks(arrayObjects)
+    expect(arrResult.length).toBe(1)
+
+  })
+  //typeof obj.then === function
+  //obj instanceof Promise
+})
 
 
