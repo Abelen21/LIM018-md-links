@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-const axios = require("axios").default;
+const axios = require("axios");
 
 const isPathAbsolute = (param) => path.isAbsolute(param);
 
@@ -29,36 +29,59 @@ const findLinks = (param1, param2) => {
   return arrayObjects;
 };
 
-const validateLinks = (param) => {
-  
+const validateLinks = (arrLinks) => {
   let arrayPromises = [];
-  for (var i = 0; i < param.length; i++) {
-    const obj = param[i];
-    let promise = axios({ method: "GET", url: obj.href })
+  for (var i = 0; i < arrLinks.length; i++) {
+    const obj = arrLinks[i];
+    let promise = axios.get(obj.href)
       .then((res) => {
+        console.log('RES:::', res);
         return {
-          text: obj.text,
           href: res.config.url,
+          text: obj.text,
           file: obj.file,
           status: res.status,
-          statustext: res.statusText,
+          message: 'ok',
         };
       })
       .catch((error) => {
         if ("response" in error) {
           return {
-            text: obj.text,
             href: error.response.url,
+            text: obj.text,
+            file: obj.file,
             status: error.response.status,
-            statustext: error.response.statusText,
+            message: 'fail',
           };
         }
       });
     arrayPromises.push(promise);
   }
-  return arrayPromises
+  return arrayPromises;
   
 };
+
+////recorrido de directorio
+const findFileDirectory = (routeDirectory) =>{
+  const arrayFiles = [];
+
+  const readDirectory = fs.readdirSync(routeDirectory);
+
+  readDirectory.forEach((files)=>{
+    
+    const newRoutedirectory = path.join(routeDirectory,files);
+     if(newRoutedirectory.isDirectory()){
+      findFileDirectory(newRoutedirectory).forEach((file)=>{
+        arrayFiles.push(file);
+      });
+     }else if(isExtNameMd(newRoutedirectory)){
+      arrayFiles.push(newRoutedirectory);
+     }
+  });
+  return arrayFiles
+}
+
+
 
 module.exports = {
   isPathAbsolute,
@@ -68,5 +91,6 @@ module.exports = {
   isExtNameMd,
   fileContent,
   findLinks,
-  validateLinks
+  validateLinks,
+  findFileDirectory
 };
